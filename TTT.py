@@ -1,4 +1,6 @@
 import itertools
+from colorama import Fore,Back,Style,init
+init()
 
 def check_same(list):
     if list.count(list[0]) == len(list) and list[0] != 0:
@@ -62,14 +64,24 @@ def game_board(game_map,player=0,row=0,column=0,just_display=False):
         if game_map[row][column] != 0:
             print(f"This position {row},{column} is taken! Choose another")
             return game_map, False
-        print("   " + "  ".join([str(i) for i in range(len(game_map))]))
+        print("    " + "  ".join([str(i) for i in range(len(game_map))]))
         if(not just_display):
             game_map[row][column] = player
+
         for count, row in enumerate(game_map):
-            print(count,row)
+            colored_row = " "
+            for item in row:
+                if item == 0:
+                    colored_row += Fore.MAGENTA + " - " + Style.RESET_ALL
+                elif item == 1:
+                    colored_row += Fore.RED + " X " + Style.RESET_ALL
+                elif item == 2:
+                    colored_row += Fore.GREEN + " O " + Style.RESET_ALL
+            print(count,colored_row)
+
         return game_map, True
     except IndexError as e:
-        print("row and column should be between 0 and 2 inclusive!")
+        print("row and column should be in grid map!")
         return game_map, False
     except Exception as e:
         print("Something went wrong!", e)
